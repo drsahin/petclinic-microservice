@@ -3,8 +3,13 @@ provider "aws" {
 }
 
 resource "aws_vpc" "main" {
-  cidr_block = "172.31.80.0/20"
+  cidr_block = "172.31.0.0/16"
 }
+
+resource "aws_subnet" "my_subnet" {
+  vpc_id            = "${aws_vpc.my_vpc.id}"
+  cidr_block        = "172.31.80.0/20"
+  availability_zone = "us-east-1a"
 
 module "iam" {
   source = "./modules/IAM"
@@ -23,7 +28,6 @@ resource "aws_security_group" "matt-kube-worker-sg" {
     from_port = 10250
     to_port = 10250
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
-    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   ingress {
     protocol = "tcp"
@@ -92,35 +96,30 @@ resource "aws_security_group" "matt-kube-master-sg" {
     from_port = 2380
     to_port = 2380
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
-    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   ingress {
     protocol = "tcp"
     from_port = 2379
     to_port = 2379
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
-    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   ingress {
     protocol = "tcp"
     from_port = 10250
     to_port = 10250
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
-    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   ingress {
     protocol = "tcp"
     from_port = 10251
     to_port = 10251
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
-    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   ingress {
     protocol = "tcp"
     from_port = 10252
     to_port = 10252
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
-    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   ingress {
     protocol = "tcp"
@@ -133,7 +132,6 @@ resource "aws_security_group" "matt-kube-master-sg" {
     from_port = 8472
     to_port = 8472
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
-    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   egress {
     protocol = "-1"
