@@ -19,13 +19,11 @@ module "iam" {
 resource "aws_security_group" "matt-kube-mutual-sg" {
   name = "kube-mutual-sec-group-for-matt"
   vpc_id = aws_vpc.main.id
-  availability_zone = "us-east-1a"
 }
 
 resource "aws_security_group" "matt-kube-worker-sg" {
   name = "kube-worker-sec-group-for-matt"
   vpc_id = aws_vpc.main.id
-  availability_zone = "us-east-1a"
 
   ingress {
     protocol = "tcp"
@@ -69,7 +67,6 @@ resource "aws_security_group" "matt-kube-worker-sg" {
 resource "aws_security_group" "matt-kube-master-sg" {
   name = "kube-master-sec-group-for-matt"
   vpc_id = aws_vpc.main.id
-  availability_zone = "us-east-1a"
 
   ingress {
     protocol = "tcp"
