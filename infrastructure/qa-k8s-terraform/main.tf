@@ -2,16 +2,22 @@ provider "aws" {
   region  = "us-east-1"
 }
 
+resource "aws_vpc" "main" {
+  cidr_block = "172.31.0.0/16"
+}
+
 module "iam" {
   source = "./modules/IAM"
 }
 
 resource "aws_security_group" "matt-kube-mutual-sg" {
   name = "kube-mutual-sec-group-for-matt"
+  vpc_id = aws_vpc.main.id
 }
 
 resource "aws_security_group" "matt-kube-worker-sg" {
   name = "kube-worker-sec-group-for-matt"
+  vpc_id = aws_vpc.main.id
   ingress {
     protocol = "tcp"
     from_port = 10250
@@ -53,6 +59,7 @@ resource "aws_security_group" "matt-kube-worker-sg" {
 
 resource "aws_security_group" "matt-kube-master-sg" {
   name = "kube-master-sec-group-for-matt"
+  vpc_id = aws_vpc.main.id
 
   ingress {
     protocol = "tcp"
