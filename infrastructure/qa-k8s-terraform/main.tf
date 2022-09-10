@@ -23,6 +23,7 @@ resource "aws_security_group" "matt-kube-worker-sg" {
     from_port = 10250
     to_port = 10250
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
+    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   ingress {
     protocol = "tcp"
@@ -91,30 +92,35 @@ resource "aws_security_group" "matt-kube-master-sg" {
     from_port = 2380
     to_port = 2380
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
+    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   ingress {
     protocol = "tcp"
     from_port = 2379
     to_port = 2379
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
+    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   ingress {
     protocol = "tcp"
     from_port = 10250
     to_port = 10250
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
+    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   ingress {
     protocol = "tcp"
     from_port = 10251
     to_port = 10251
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
+    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   ingress {
     protocol = "tcp"
     from_port = 10252
     to_port = 10252
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
+    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   ingress {
     protocol = "tcp"
@@ -127,6 +133,7 @@ resource "aws_security_group" "matt-kube-master-sg" {
     from_port = 8472
     to_port = 8472
     security_groups = [aws_security_group.matt-kube-mutual-sg.id]
+    cidr_blocks      = [aws_vpc.main.cidr_block]
   }
   egress {
     protocol = "-1"
