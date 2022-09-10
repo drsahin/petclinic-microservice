@@ -10,6 +10,7 @@ resource "aws_subnet" "my_subnet" {
   vpc_id            = "${aws_vpc.main.id}"
   cidr_block        = "172.31.80.0/20"
   availability_zone = "us-east-1a"
+}
 
 module "iam" {
   source = "./modules/IAM"
