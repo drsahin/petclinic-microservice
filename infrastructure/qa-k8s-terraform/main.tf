@@ -2,15 +2,6 @@ provider "aws" {
   region  = "us-east-1"
 }
 
-resource "aws_vpc" "main" {
-  cidr_block = "172.31.0.0/16"
-}
-
-resource "aws_subnet" "my_subnet" {
-  vpc_id            = "${aws_vpc.main.id}"
-  cidr_block        = "172.31.80.0/20"
-  availability_zone = "us-east-1a"
-}
 
 module "iam" {
   source = "./modules/IAM"
@@ -18,12 +9,12 @@ module "iam" {
 
 resource "aws_security_group" "matt-kube-mutual-sg" {
   name = "kube-mutual-sec-group-for-matt"
-  vpc_id = aws_vpc.main.id
+  vpc_id = 	vpc-01a2372c602e932c3
 }
 
 resource "aws_security_group" "matt-kube-worker-sg" {
   name = "kube-worker-sec-group-for-matt"
-  vpc_id = aws_vpc.main.id
+  vpc_id = 	vpc-01a2372c602e932c3
 
   ingress {
     protocol = "tcp"
@@ -66,7 +57,7 @@ resource "aws_security_group" "matt-kube-worker-sg" {
 
 resource "aws_security_group" "matt-kube-master-sg" {
   name = "kube-master-sec-group-for-matt"
-  vpc_id = aws_vpc.main.id
+  vpc_id = vpc-01a2372c602e932c3
 
   ingress {
     protocol = "tcp"
@@ -152,7 +143,7 @@ resource "aws_instance" "kube-master" {
     iam_instance_profile = module.iam.master_profile_name
     vpc_security_group_ids = [aws_security_group.matt-kube-master-sg.id, aws_security_group.matt-kube-mutual-sg.id]
     key_name = "mattkey"
-    subnet_id = aws_subnet.my_subnet.id  # select own subnet_id of us-east-1a
+    subnet_id = subnet-091530f43d0b1e422  # select own subnet_id of us-east-1a
     availability_zone = "us-east-1a"
     tags = {
         Name = "kube-master"
@@ -170,7 +161,7 @@ resource "aws_instance" "worker-1" {
         iam_instance_profile = module.iam.worker_profile_name
     vpc_security_group_ids = [aws_security_group.matt-kube-worker-sg.id, aws_security_group.matt-kube-mutual-sg.id]
     key_name = "mattkey"
-    subnet_id = aws_subnet.my_subnet.id  # select own subnet_id of us-east-1a
+    subnet_id = subnet-091530f43d0b1e422  # select own subnet_id of us-east-1a
     availability_zone = "us-east-1a"
     tags = {
         Name = "worker-1"
@@ -188,7 +179,7 @@ resource "aws_instance" "worker-2" {
     iam_instance_profile = module.iam.worker_profile_name
     vpc_security_group_ids = [aws_security_group.matt-kube-worker-sg.id, aws_security_group.matt-kube-mutual-sg.id]
     key_name = "mattkey"
-    subnet_id = aws_subnet.my_subnet.id  # select own subnet_id of us-east-1a
+    subnet_id = subnet-091530f43d0b1e422  # select own subnet_id of us-east-1a
     availability_zone = "us-east-1a"
     tags = {
         Name = "worker-2"
